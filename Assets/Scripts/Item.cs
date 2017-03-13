@@ -15,14 +15,12 @@ public abstract class Item : NetworkBehaviour {
 
 	protected ItemState itemState = ItemState.None;
 
-	public GameObject itemModel;
-	public InventoryModel inventoryModel;
+	public GameObject inventoryModel;
 	public Vector3 positionOffset;
 	public Vector3 rotationOffset;
 	[HideInInspector]
 	public PlayerHand currentHand;
-	protected GameObject spawnFXPrefab;
-	protected GameObject spawnFX;
+
 	protected NetworkIdentity networkIdentity;
 	protected NetworkTransformCustom networkTransform;
 	protected VR_Player player;
@@ -33,7 +31,7 @@ public abstract class Item : NetworkBehaviour {
 		//Get references
 		networkTransform = GetComponent<NetworkTransformCustom>();
 		networkIdentity = GetComponent<NetworkIdentity>();
-		spawnFXPrefab = Resources.Load("ItemSpawnFX") as GameObject;
+
 		rb = GetComponent<Rigidbody>();
 		rb.useGravity = false;
 		rb.isKinematic = true;
@@ -195,13 +193,6 @@ public abstract class Item : NetworkBehaviour {
 	{
 		if(itemState != state)
 		{
-			switch(itemState)
-			{
-				case ItemState.OnSpawn:
-				if(spawnFX != null)
-				Destroy(spawnFX);
-				break;
-			}
 			itemState = state;
 		}
 	}

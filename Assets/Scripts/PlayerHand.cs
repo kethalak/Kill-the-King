@@ -10,15 +10,12 @@ public class PlayerHand : NetworkBehaviour {
 	[HideInInspector]
 	public Item equippedItem;
 	[HideInInspector]
-	public InventoryModel touchedInventoryItem;
-	[HideInInspector]
 	public SteamVR_Controller.Device device;
 	[HideInInspector]
 	public SteamVR_TrackedObject trackedObj;
 
 	private Rigidbody equippedItemRb;
 	private SphereCollider handCollider;
-	private GameObject inventoryPreview;
 
 	private GameObject viveController;
 
@@ -58,7 +55,6 @@ public class PlayerHand : NetworkBehaviour {
 			GameManager.Instance.player.rightHand = this;
 		}
 		parentIsLocalPlayer = true;
-
 	}
 
 	void FixedUpdate () 
@@ -107,87 +103,44 @@ public class PlayerHand : NetworkBehaviour {
 	void HandInteractions()
 	{	
 		//If touchpad is pressed down
-		if(device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad) && inventoryPreview == null)
-		{	
-			//Place equipped item in inventory
-			if(equippedItem != null)
-			{
-				UnequipItem();
-			}
-			//Generate an inventory preview
-			inventoryPreview = GameManager.Instance.player.playerInventory.GeneratePreview(this);
-			GameManager.Instance.player.leftHand.handCollider.radius = 0.01f;
-			GameManager.Instance.player.rightHand.handCollider.radius = 0.01f;
+		if(device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad))
+		{
+
 		}
 		// If touchpad is released
-		if(device.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad) && inventoryPreview != null)
+		if(device.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad))
 		{	
-			//Equip selected inventory item
-			if(touchedInventoryItem != null)
-			{
-				EquipItem(touchedInventoryItem.objRef);
-				touchedInventoryItem.objRef.OnTouchpadUp();
-			}
-			//Destroy inventory preview
-			Destroy(inventoryPreview);
-			GameManager.Instance.player.leftHand.handCollider.radius = 0.1f;
-			GameManager.Instance.player.rightHand.handCollider.radius = 0.1f;
+
 		}
 		// If trigger is pressed down
 		if(device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger))
 		{
-			//Activate equipped item on trigger method
-			if(equippedItem != null)
-			{
-				equippedItem.OnTriggerDown();
-			}
-			//Or equip touched item
-			else if(touchedItem != null)
-			{
-				EquipItem(touchedItem);
-				touchedItem.EquipInit();
-			}
+
 		}
 		// If trigger is released
 		if(device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger))
 		{
-			//Activate equipped item trigger release method
-			if(equippedItem != null)
-				equippedItem.OnTriggerUp();
+
 		}
 		// While trigger is pressed
 		if(device.GetPress(SteamVR_Controller.ButtonMask.Trigger))
 		{
-			//Continuously activate equipped item trigger method
-			if(equippedItem != null)
-			equippedItem.OnTrigger();
+
 		}
 		// If grip button is pressed down
 		if(device.GetPressDown(SteamVR_Controller.ButtonMask.Grip))
 		{
-			//Activate equipped item on grip method
-			if(equippedItem != null)
-				equippedItem.OnGripDown();
-			//Or equip touched item
-			else if(touchedItem != null)
-			{
-				EquipItem(touchedItem);
-				touchedItem.EquipInit();
-			}
+
 		}
 		// If grip button is released
 		if(device.GetPressUp(SteamVR_Controller.ButtonMask.Grip))
 		{
-			//Activate equipped item grip release method
-			if(equippedItem != null)
-				equippedItem.OnGripUp();
+
 		}
 		// While grip button is pressed
 		if(device.GetPress(SteamVR_Controller.ButtonMask.Grip))
 		{	
-			//Continuously activate equipped item grip method
-			if(equippedItem != null)
-				equippedItem.OnGrip();
+
 		}
 	}
 
@@ -226,12 +179,4 @@ public class PlayerHand : NetworkBehaviour {
 		handCollider.enabled=(active);
 	}
 
-	// void OnTriggerEnter(Collider col)
-	// {
-	// 	if(col.GetComponent<InventoryModel>() != null)
-	// 	{
-	// 		device.TriggerHapticPulse(100);
-	// 	}
-		 
-	// }
 }

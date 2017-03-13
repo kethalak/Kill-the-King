@@ -12,18 +12,15 @@ public class NetworkTransformCustom : NetworkBehaviour {
 	public float positionInterpolation = 20;
 	public bool syncRotation = true;
 	public float rotationThreshold = 0.01f;
-	[RangeAttribute(1f, 30f)]
+	[RangeAttribute(1f, 30f)] 
 	public float rotationInterpolation= 20;
 	public bool syncScale = true;
 	public float scaleThreshold = 0.01f;
 	
-	[Header("Options:")]
 	[SyncVar(hook="SetActive")]
 	private bool isActive = true;
 
 	private Rigidbody2D rb;
-	[HideInInspector]
-	public GameObject activatableObject;
 
 	[SyncVar] Vector3 position;
 	[SyncVar] Vector3 scale;
@@ -32,8 +29,7 @@ public class NetworkTransformCustom : NetworkBehaviour {
 
 	void Awake()
 	{
-		if(GetComponent<Item>() != null && GetComponent<Item>().itemModel != null)
-			activatableObject = GetComponent<Item>().itemModel;
+
 	}
 
 	private void Start()
@@ -142,10 +138,7 @@ public class NetworkTransformCustom : NetworkBehaviour {
 	[ClientCallback]
 	void SetActive(bool active)
 	{
-		if(activatableObject != null)
-			activatableObject.SetActive(active);
-		else
-			this.gameObject.SetActive(active);		
+		this.gameObject.SetActive(active);		
 	}
 }
 

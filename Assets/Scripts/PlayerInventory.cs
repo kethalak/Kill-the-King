@@ -25,29 +25,10 @@ public class PlayerInventory : NetworkBehaviour {
 		}
 	}
 
-	private Vector3[] slotPosition = new Vector3[] {new Vector3(-.2f, .2f ,0), new Vector3(0, .2f, 0), new Vector3(.2f, .2f, 0), new Vector3(-.2f, 0, 0), new Vector3(.2f, 0, 0), new Vector3(.2f, -.2f, 0), new Vector3(0, -.2f, 0), new Vector3(-.2f, -.2f, 0)};
 
 	public GameObject GeneratePreview(PlayerHand hand)
 	{
-		GameObject gridPreview = Instantiate(inventoryGridModel, hand.transform.position, hand.transform.rotation);
-		gridPreview.transform.LookAt(Camera.main.transform);
-		gridPreview.transform.Rotate(0,180,0);
-		for(var i = 0; i < slotPosition.Length; i++)
-		{
-			if(i < inventory.Count)
-			{
-				Item item = inventory[i].GetComponent<Item>();
-				InventoryModel model = Instantiate(item.inventoryModel, gridPreview.transform.position, gridPreview.transform.rotation);
-				model.GetComponent<InventoryModel>().objRef = inventory[i].GetComponent<Item>();
-				model.transform.SetParent(gridPreview.transform);
-				model.transform.localPosition = slotPosition[i];
-			}
-			else
-			{
-				//handle empty slots
-			}
-		}
-		return gridPreview;
+		return gameObject;
 	}
 
 	public void RemoveItem(GameObject item)
